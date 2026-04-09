@@ -1,0 +1,17 @@
+# Environment and secrets
+.env
+*.env
+.zshrc
+
+# Obsidian
+vault/.obsidian/
+
+# OS
+.DS_Store
+*.DS_Store
+
+# Node
+node_modules/
+
+# Logs
+*.log
