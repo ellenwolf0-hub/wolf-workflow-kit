@@ -53,6 +53,7 @@ Do these every single day until they're muscle memory.
 | `/weekly` | Roll up the week into a summary | Friday afternoon manager update |
 | `/create-agent` | Dispatch an agent to do research or a first draft autonomously | Work done while you're in another meeting |
 | `/end-day` | Full day wrap — Granola sweep, Slack sweep, EOD + SOD | When you want the full picture at day's end |
+| `/assess` | People team diagnostic — sweep all sources, surface what's actually going on | New role, new quarter, or any time you need to cut through noise |
 
 ---
 
@@ -69,6 +70,7 @@ Do these every single day until they're muscle memory.
 /recap              — where are we right now?
 /draft              — write something
 /weekly             — roll up the week
+/assess             — People team diagnostic: what's actually going on?
 /create-spec        — start a new project formally
 /review-spec        — review a spec before planning
 /plan-spec          — turn a spec into a plan

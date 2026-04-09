@@ -27,11 +27,16 @@ Skills that work together across your day. Each one reads what the last one wrot
 | `/meet` | Post-meeting capture — pulls Granola transcript, generates structured note with decisions |
 | `/prep` | Pre-meeting brief — surfaces past context and open decisions |
 
+### Diagnostics
+| Skill | What it does |
+|-------|-------------|
+| `/assess` | People team diagnostic — sweeps Granola, Slack, Coda, and vault to surface what's actually going on |
+
 ### Project Workflow
 | Skill | What it does |
 |-------|-------------|
 | `/create-spec` | Define a project, program, or initiative formally |
-| `/review-spec` | 3-agent review team — catches gaps before you start building |
+| `/review-spec` | 3-perspective review — catches gaps before you start building |
 | `/plan-spec` | Turn a reviewed spec into a phased plan |
 | `/create-agent` | Dispatch a specialized agent to do People Ops research or drafting autonomously |
 
@@ -78,7 +83,7 @@ Use `/pickup` to load yesterday's context instead of re-explaining everything. U
 Use `/create-spec` for any initiative that needs more than a Slack thread. Use `/review-spec` before you present anything. Use `/plan-spec` to turn a spec into a task list.
 
 **Week 4+ — Full Power**
-`/prep` before every important meeting. `/draft` instead of staring at a blank message. `/create-agent` when you need a research pass done while you're in another meeting. `/end-day` to get a real EOD report with a full Granola + Slack sweep.
+`/prep` before every important meeting. `/draft` instead of staring at a blank message. `/create-agent` when you need a research pass done while you're in another meeting. `/end-day` to get a real EOD report with a full Granola + Slack sweep. `/assess` when you need to cut through the noise and find out what's actually happening with your team.
 
 ---
 
