@@ -105,7 +105,7 @@ When the agent completes, present the key output and ask:
 > Read all meeting notes in `Meetings/` that mention [employee name]. Extract the decisions section from each. Produce a calibration pre-brief: prior ratings context, recurring themes, open items, suggested talking points. Present inline.
 
 **Metro Status Sweep:**
-> Sweep `#proj-people-metro` in Slack for the last 7 days. Extract: updates from DRIs, blockers mentioned, decisions made, open questions. Produce a status summary organized by workstream. Save to `Projects/Metro/RE - Metro Status YYYY-MM-DD.md`.
+> Sweep the project Slack channel for the last 7 days. Extract: updates from DRIs, blockers mentioned, decisions made, open questions. Produce a status summary organized by workstream. Flag anything that needs your input before proceeding. Save to `Projects/RE - Metro Status YYYY-MM-DD.md`.
 
 **Weekly Narrative Draft:**
 > Read all daily notes from this week (`Daily/DN - YYYY-MM-DD.md` for Mon-Fri). Read all meeting notes from this week. Produce a weekly narrative for the manager update: what shipped, what's in progress, what's blocked, what needs a decision. Keep it under 300 words.

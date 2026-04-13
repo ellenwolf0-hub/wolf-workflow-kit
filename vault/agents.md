@@ -36,12 +36,34 @@ Slack, Zoom, Coda, Granola, Google Calendar, Workday
 
 ## Skills Available
 
+**Daily loop (start here):**
 - `/orient` — start of every session
-- `/meet` — after any meeting (pulls Granola transcript automatically)
+- `/meet` — after any meeting
 - `/closeout` — end of every session
-- `/prep` — before important meetings (requires meeting name)
-- `/draft` — when you need to write something
-- `/weekly` — Friday afternoon rollup
+
+**Context management:**
+- `/pickup` — resume a specific open item
+- `/log-work` — log what you just did mid-session
+- `/park` — set aside in-progress work to return to later
+- `/recap` — summarize what's happened in the current session
+- `/create-pickup` — create a pickup doc for any open item
+
+**Meeting workflow:**
+- `/prep [meeting name]` — pre-meeting brief before important meetings
+- `/draft` — write Slack, email, or talking points in your voice
+- `/weekly` — Friday afternoon week rollup
+
+**Diagnostics:**
+- `/assess` — People team diagnostic: sweep all sources, surface what's actually going on
+
+**Project structure:**
+- `/create-spec` — formally define a project or initiative
+- `/review-spec` — catch gaps before planning
+- `/plan-spec` — turn a reviewed spec into a phased plan
+- `/create-agent` — dispatch an agent to do research autonomously
+
+**Full day wrap:**
+- `/end-day` — Granola sweep + Slack sweep + EOD report + tomorrow's SOD
 
 ## Vault Structure
 
