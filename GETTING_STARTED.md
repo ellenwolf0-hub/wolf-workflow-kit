@@ -102,7 +102,15 @@ You can always review everything Claude wrote by checking the vault in Obsidian 
 
 You should now see the Claude Code interface in Warp — it looks like a chat window.
 
-**Type this:**
+**Type this first:**
+
+```
+/onboard
+```
+
+Claude will ask you 4 short questions about your current projects, key stakeholders, and how you like to work — then pull context from Coda and Granola (if connected) to build a real starting profile. This is what makes session 1 feel like session 10.
+
+**Then type:**
 
 ```
 /orient
@@ -110,12 +118,12 @@ You should now see the Claude Code interface in Warp — it looks like a chat wi
 
 Claude will:
 1. Read the date
-2. Load your `agents.md` profile
+2. Load your `agents.md` profile (now populated from `/onboard`)
 3. Load your `lessons.md` context
 4. Check for any open pickups (things left from previous sessions)
 5. Greet you and tell you what's open
 
-The first time, it'll notice that `agents.md` has your real info now and greet you by name. If it says "agents.md isn't personalized yet," go back to Obsidian and make sure you saved the file.
+The first time, it'll greet you by name and tell you what it knows about your work.
 
 ---
 
@@ -169,13 +177,14 @@ You'll be redirected to authenticate in your browser.
 
 ---
 
-## All 17 Skills
+## All 20 Skills
 
 Once you're comfortable with the 3-command loop, here's the full toolkit:
 
 | Command | What it does |
 |---------|-------------|
 | `/orient` | Start every session with this |
+| `/onboard` | First-session setup — import context from Coda/Granola |
 | `/pickup` | Resume a specific open item |
 | `/meet` | After any meeting |
 | `/prep [meeting]` | Before important meetings |
@@ -192,6 +201,8 @@ Once you're comfortable with the 3-command loop, here's the full toolkit:
 | `/create-agent` | Delegate a task to an autonomous agent |
 | `/create-pickup` | Create a pickup doc for any open item |
 | `/end-day` | Full day wrap with Granola + Slack sweep |
+| `/learn` | Save a lesson or rule for future sessions |
+| `/update-wfk` | Pull the latest skills from GitHub |
 
 See `CHEATSHEET.md` for the 4-week ramp-up guide.
 

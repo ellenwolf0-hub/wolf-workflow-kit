@@ -8,18 +8,22 @@ category: Reference
 
 ## Who Am I
 
-> Fill this in on first run. Claude reads this at the start of every session.
+> Fill this in on first run — or run `/onboard` to have Claude fill it in from your Coda and Granola context.
 
+**Kit Role:** user
 **Name:** [Your name]
 **Role:** [Your title — e.g., "HRBP", "Recruiter", "People Ops Coordinator", "Director of People"]
 **Team:** [Your team name — e.g., "People Team", "Talent Acquisition", "Total Rewards"]
 **Manager:** [Your manager's name]
-**Key stakeholders:** [2-3 people you work with most]
+**Key stakeholders:** [2-3 people you work with most — name and one-phrase context for each]
 
 **My top priorities right now:**
-- [Priority 1]
-- [Priority 2]
-- [Priority 3]
+- [Project 1]: [one-line status]
+- [Project 2]: [one-line status]
+- [Project 3]: [one-line status]
+
+**Active context (loaded: [date]):**
+[2-3 sentences of what's most in motion right now. Updated by /onboard.]
 
 ---
 
@@ -42,6 +46,7 @@ Slack, Zoom, Coda, Granola, Google Calendar, Workday
 - `/closeout` — end of every session
 
 **Context management:**
+- `/onboard` — first-session setup, imports context from Coda/Granola
 - `/pickup` — resume a specific open item
 - `/log-work` — log what you just did mid-session
 - `/park` — set aside in-progress work to return to later
@@ -61,6 +66,10 @@ Slack, Zoom, Coda, Granola, Google Calendar, Workday
 - `/review-spec` — catch gaps before planning
 - `/plan-spec` — turn a reviewed spec into a phased plan
 - `/create-agent` — dispatch an agent to do research autonomously
+
+**Kit management:**
+- `/learn` — save a reusable lesson or rule from this session
+- `/update-wfk` — pull the latest skills from GitHub
 
 **Full day wrap:**
 - `/end-day` — Granola sweep + Slack sweep + EOD report + tomorrow's SOD
