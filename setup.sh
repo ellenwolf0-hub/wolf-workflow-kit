@@ -68,6 +68,11 @@ for skill_dir in "$SKILLS_SRC"/*/; do
   if [ -f "$skill_dir/SKILL.md" ]; then
     mkdir -p "$SKILLS_DIR/$skill_name"
     cp "$skill_dir/SKILL.md" "$SKILLS_DIR/$skill_name/SKILL.md"
+    # Copy references/ subdirectory if present (needed by some skills)
+    if [ -d "$skill_dir/references" ]; then
+      mkdir -p "$SKILLS_DIR/$skill_name/references"
+      cp "$skill_dir/references/"*.md "$SKILLS_DIR/$skill_name/references/" 2>/dev/null || true
+    fi
     echo "  ✓ /$skill_name"
     SKILL_COUNT=$((SKILL_COUNT + 1))
   fi
@@ -124,6 +129,13 @@ echo "  [Coda]     To connect Coda, you need your API token from coda.io/account
 echo "             Then add it to your shell config (~/.zshrc or ~/.bashrc):"
 echo '             export CODA_API_TOKEN="your-token-here"'
 echo "             Do not share this token — treat it like a password."
+
+# NotebookLM (Oracle)
+echo ""
+echo "  [Oracle]   To use /oracle-create, /oracle-ask, /oracle-research:"
+echo "             uv tool install notebooklm-mcp-cli"
+echo "             claude mcp add notebooklm"
+echo "             (Requires uv: https://docs.astral.sh/uv/getting-started/installation/)"
 
 # ── Done ──────────────────────────────────────────
 echo ""

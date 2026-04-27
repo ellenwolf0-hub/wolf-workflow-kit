@@ -177,7 +177,7 @@ You'll be redirected to authenticate in your browser.
 
 ---
 
-## All 20 Skills
+## All 24 Skills
 
 Once you're comfortable with the 3-command loop, here's the full toolkit:
 
@@ -197,11 +197,15 @@ Once you're comfortable with the 3-command loop, here's the full toolkit:
 | `/assess` | People team diagnostic — what's actually going on |
 | `/create-spec` | Formally define a project or initiative |
 | `/review-spec` | Catch gaps before planning |
-| `/plan-spec` | Turn a spec into a phased plan |
+| `/create-plan` | Turn a spec into a phased plan |
 | `/create-agent` | Delegate a task to an autonomous agent |
 | `/create-pickup` | Create a pickup doc for any open item |
 | `/end-day` | Full day wrap with Granola + Slack sweep |
 | `/learn` | Save a lesson or rule for future sessions |
+| `/dream` | Consolidate and clean up Claude's memory |
+| `/oracle-create` | Build a research notebook for any domain (needs NotebookLM MCP) |
+| `/oracle-ask` | Query your oracle for design guidance |
+| `/oracle-research` | Expand your oracle with new research |
 | `/update-wfk` | Pull the latest skills from GitHub |
 
 See `CHEATSHEET.md` for the 4-week ramp-up guide.

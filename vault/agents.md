@@ -64,11 +64,17 @@ Slack, Zoom, Coda, Granola, Google Calendar, Workday
 **Project structure:**
 - `/create-spec` — formally define a project or initiative
 - `/review-spec` — catch gaps before planning
-- `/plan-spec` — turn a reviewed spec into a phased plan
+- `/create-plan` — turn a reviewed spec into a phased plan
 - `/create-agent` — dispatch an agent to do research autonomously
+
+**Oracle (research grounding — requires NotebookLM MCP):**
+- `/oracle-create` — build a research notebook for any domain
+- `/oracle-ask` — query your oracle for design guidance
+- `/oracle-research` — expand your oracle with new research
 
 **Kit management:**
 - `/learn` — save a reusable lesson or rule from this session
+- `/dream` — consolidate and clean up Claude's memory
 - `/update-wfk` — pull the latest skills from GitHub
 
 **Full day wrap:**

@@ -62,14 +62,24 @@ The core loop is three commands:
 |-------|-------------|
 | `/create-spec` | Guided interview → tiered spec document (Brief / Standard / Full) |
 | `/review-spec` | 3-perspective review before planning — catches gaps and open decisions |
-| `/plan-spec` | Reviewed spec → phased implementation plan with acceptance criteria |
+| `/create-plan` | Reviewed spec → phased implementation plan with acceptance criteria |
 | `/create-agent` | Dispatch a specialized agent to do research or drafting autonomously |
+
+### Oracle (Research Grounding)
+| Skill | What it does |
+|-------|-------------|
+| `/oracle-create` | Creates a NotebookLM research notebook for a domain — deep research, grounding report, registered to the project |
+| `/oracle-ask` | Queries your oracle for design guidance — returns insights with source citations |
+| `/oracle-research` | Expands an existing oracle with new research as your project scope grows |
+
+*Oracle skills require NotebookLM MCP: `uv tool install notebooklm-mcp-cli` then `claude mcp add notebooklm`*
 
 ### Kit Management
 | Skill | What it does |
 |-------|-------------|
 | `/onboard` | First-session setup — imports context from Coda/Granola, builds real agents.md |
 | `/learn` | Capture a reusable lesson or rule from the session into lessons.md |
+| `/dream` | Memory consolidation — merges duplicates, prunes stale data, tightens your memory index |
 | `/update-wfk` | Sync your local kit with GitHub — pull updates, push improvements |
 
 ---
