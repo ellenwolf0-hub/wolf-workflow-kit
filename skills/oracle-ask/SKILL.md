@@ -2,7 +2,7 @@
 
 Query an existing oracle for design guidance. Surfaces real-world context as a proposition for the user to evaluate.
 
-Use this skill when the user says "ask the oracle", "oracle ask", "check with the oracle", "what does the oracle say", or when called inline from other skills (create-spec, design, grill, create-plan, implement) at design decision points.
+Use this skill when the user says "ask the oracle", "oracle ask", "check with the oracle", "what does the oracle say", or when called inline from other skills (create-note SPC, design, grill, create-plan, implement) at design decision points.
 
 Governed by [[SD - Oracle System]]. The oracle informs, the user decides. No silent decisions.
 
@@ -56,7 +56,7 @@ Format the response using the standard oracle proposition format:
 
 **When called standalone:** Present the proposition and let the user respond.
 
-**When called inline from another skill:** Present the proposition as context before the skill's own question. Example in `/create-spec`:
+**When called inline from another skill:** Present the proposition as context before the skill's own question. Example in `/create-note SPC`:
 
 > The oracle suggests knowledge base systems typically use a three-tier taxonomy (category > topic > article) with flat navigation at the top level.
 > *Sources: NN/g taxonomy research, Confluence IA patterns*

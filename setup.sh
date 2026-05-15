@@ -3,14 +3,58 @@ set -e
 
 # ────────────────────────────────────────────────
 # Wolf Workflow Kit — Install Script
-# Version: 1.1.0
+# Version: 1.2.0
 # Run time: under 5 minutes on a standard Mac
 # Run from the wolf-workflow-kit directory:
-#   bash setup.sh
+#   bash setup.sh              (full install)
+#   bash setup.sh --skills-only (skills only, used by /update-wfk pull)
 # ────────────────────────────────────────────────
 
 VAULT_DIR="$(pwd)/vault"
 SKILLS_SRC="$(pwd)/skills"
+
+SKILLS_ONLY=false
+for arg in "$@"; do
+  case "$arg" in
+    --skills-only) SKILLS_ONLY=true ;;
+  esac
+done
+
+install_skills() {
+  SKILLS_DIR="$HOME/.claude/skills"
+  mkdir -p "$SKILLS_DIR"
+
+  SKILL_COUNT=0
+  for skill_dir in "$SKILLS_SRC"/*/; do
+    skill_name=$(basename "$skill_dir")
+    if [ -f "$skill_dir/SKILL.md" ]; then
+      mkdir -p "$SKILLS_DIR/$skill_name"
+      cp "$skill_dir/SKILL.md" "$SKILLS_DIR/$skill_name/SKILL.md"
+      if [ -d "$skill_dir/references" ]; then
+        mkdir -p "$SKILLS_DIR/$skill_name/references"
+        cp -R "$skill_dir/references/"* "$SKILLS_DIR/$skill_name/references/" 2>/dev/null || true
+      fi
+      if [ -d "$skill_dir/templates" ]; then
+        mkdir -p "$SKILLS_DIR/$skill_name/templates"
+        cp -R "$skill_dir/templates/"* "$SKILLS_DIR/$skill_name/templates/" 2>/dev/null || true
+      fi
+      echo "  ✓ /$skill_name"
+      SKILL_COUNT=$((SKILL_COUNT + 1))
+    fi
+  done
+
+  echo ""
+  echo "  $SKILL_COUNT skills installed"
+}
+
+if [ "$SKILLS_ONLY" = true ]; then
+  echo ""
+  echo "→ Installing skills (skills-only mode)..."
+  install_skills
+  echo ""
+  echo "  Done. Restart Claude Code to pick up new slash commands."
+  exit 0
+fi
 
 echo ""
 echo "╔══════════════════════════════════════════╗"
@@ -59,27 +103,7 @@ fi
 echo ""
 echo "→ Installing skills..."
 
-SKILLS_DIR="$HOME/.claude/skills"
-mkdir -p "$SKILLS_DIR"
-
-SKILL_COUNT=0
-for skill_dir in "$SKILLS_SRC"/*/; do
-  skill_name=$(basename "$skill_dir")
-  if [ -f "$skill_dir/SKILL.md" ]; then
-    mkdir -p "$SKILLS_DIR/$skill_name"
-    cp "$skill_dir/SKILL.md" "$SKILLS_DIR/$skill_name/SKILL.md"
-    # Copy references/ subdirectory if present (needed by some skills)
-    if [ -d "$skill_dir/references" ]; then
-      mkdir -p "$SKILLS_DIR/$skill_name/references"
-      cp "$skill_dir/references/"*.md "$SKILLS_DIR/$skill_name/references/" 2>/dev/null || true
-    fi
-    echo "  ✓ /$skill_name"
-    SKILL_COUNT=$((SKILL_COUNT + 1))
-  fi
-done
-
-echo ""
-echo "  $SKILL_COUNT skills installed"
+install_skills
 
 # ── Step 4: Open vault in Obsidian ───────────────
 echo ""

@@ -2,9 +2,9 @@
 
 Create a new oracle (NotebookLM research notebook) for a project or sub-domain. Populates it with deep research, produces a grounding report, and registers the oracle in the project's PJL frontmatter.
 
-Use this skill when the user says "create oracle", "oracle create", "set up an oracle", "research this domain", or when `/create-spec` prompts for oracle creation.
+Use this skill when the user says "create oracle", "oracle create", "set up an oracle", "research this domain", or when `/create-sd`, `/create-note SPC`, `/design`, or `/grill` prompts for oracle creation.
 
-**Requires:** NotebookLM MCP. Install with: `uv tool install notebooklm-mcp-cli` then `claude mcp add notebooklm`. The oracle informs, the user decides. No silent decisions.
+Governed by [[SD - Oracle System]]. The oracle informs, the user decides. No silent decisions.
 
 ## Steps
 
@@ -77,7 +77,7 @@ mcp__notebooklm-mcp__notebook_query(
 
 Resolve the project's reports directory. Create a dated subfolder if needed:
 ```
-Projects/reports/YYYY-MM-DD/
+{vault_root}/{paths.projects}/{project}/reports/YYYY-MM-DD/
 ```
 
 Write `ARE - {Domain} Grounding Report.md` with this frontmatter:
