@@ -114,3 +114,23 @@ See `zapier/README.md` for setup.
 | Slack MCP error | Re-run `/orient` — will prompt browser re-auth |
 | Lost track of session | Run `/recap` then `/closeout` to reset |
 | Any question | Ask Claude: "What does /[skill] do?" |
+
+### When Coda hangs (multi-minute "thinking" with no progress)
+
+The personal Coda MCP shipped with the kit is a community proxy with known instability. Sometimes the remote connection drops mid-call. Two things make this manageable:
+
+1. **Timeout caps (auto-applied by setup.sh).** Your `~/.claude/settings.json` has `MCP_TOOL_TIMEOUT=90000` (90s) and `MCP_TIMEOUT=30000` (30s). Worst-case latency is bounded — no more hour-long hangs. If you ran setup before 2026-05-19, run `/update-wfk pull` to pick this up.
+2. **Pre-approved Coda permissions (auto-applied by setup.sh).** Your `~/.claude/settings.local.json` has the common Coda read/write tools pre-approved so prompts don't fire on every call. Destructive ops (delete, document_create) still require manual approval. Same `/update-wfk pull` applies the allowlist.
+
+**When Coda still flakes anyway:**
+```bash
+claude mcp remove Coda
+# then re-add via the kit's setup instructions (Step 5, Coda section)
+```
+
+**Symptoms that mean the shim dropped, not Claude hanging:**
+- "MCP error -32000: Connection closed" in the tool result
+- A Coda call that took 60-90s then errored (the cap fired)
+- Multiple Coda calls in a row all failing
+
+If you hit any of those, do the `claude mcp remove Coda` recovery before continuing the work.

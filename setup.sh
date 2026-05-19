@@ -47,10 +47,85 @@ install_skills() {
   echo "  $SKILL_COUNT skills installed"
 }
 
+configure_mcp_timeouts() {
+  SETTINGS_FILE="$HOME/.claude/settings.json"
+  mkdir -p "$(dirname "$SETTINGS_FILE")"
+  python3 - "$SETTINGS_FILE" <<'PY'
+import json, sys
+path = sys.argv[1]
+try:
+    with open(path) as f:
+        data = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    data = {}
+env = data.get("env")
+if not isinstance(env, dict):
+    env = {}
+    data["env"] = env
+env.setdefault("MCP_TOOL_TIMEOUT", "90000")
+env.setdefault("MCP_TIMEOUT", "30000")
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+PY
+}
+
+configure_coda_permissions() {
+  LOCAL_SETTINGS="$HOME/.claude/settings.local.json"
+  mkdir -p "$(dirname "$LOCAL_SETTINGS")"
+  python3 - "$LOCAL_SETTINGS" <<'PY'
+import json, sys
+path = sys.argv[1]
+CODA_SAFE_TOOLS = [
+    "mcp__Coda__search",
+    "mcp__Coda__url_convert",
+    "mcp__Coda__whoami",
+    "mcp__Coda__tool_guide",
+    "mcp__Coda__document_read",
+    "mcp__Coda__page_read",
+    "mcp__Coda__page_create",
+    "mcp__Coda__page_update",
+    "mcp__Coda__content_modify",
+    "mcp__Coda__content_duplicate",
+    "mcp__Coda__table_columns_read",
+    "mcp__Coda__table_columns_manage",
+    "mcp__Coda__table_rows_read",
+    "mcp__Coda__table_rows_manage",
+    "mcp__Coda__table_create",
+    "mcp__Coda__formula_execute",
+]
+try:
+    with open(path) as f:
+        data = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    data = {}
+perms = data.get("permissions")
+if not isinstance(perms, dict):
+    perms = {}
+    data["permissions"] = perms
+allow = perms.get("allow")
+if not isinstance(allow, list):
+    allow = []
+    perms["allow"] = allow
+existing = set(allow)
+added = 0
+for tool in CODA_SAFE_TOOLS:
+    if tool not in existing:
+        allow.append(tool)
+        added += 1
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+print(f"  ✓ {added} Coda tools pre-approved ({len(CODA_SAFE_TOOLS)} total in safe set)")
+print(f"  ✓ Destructive ops (delete, document_create) still require manual approval")
+PY
+}
+
 if [ "$SKILLS_ONLY" = true ]; then
   echo ""
   echo "→ Installing skills (skills-only mode)..."
   install_skills
+  configure_mcp_timeouts
+  echo "  ✓ MCP timeouts checked (MCP_TOOL_TIMEOUT=90s, MCP_TIMEOUT=30s)"
+  configure_coda_permissions
   echo ""
   echo "  Done. Restart Claude Code to pick up new slash commands."
   exit 0
@@ -104,6 +179,14 @@ echo ""
 echo "→ Installing skills..."
 
 install_skills
+
+# ── Step 3.5: Configure Claude Code MCP defaults ──
+echo ""
+echo "→ Configuring Claude Code MCP defaults..."
+echo "  (Caps hung calls + pre-approves common Coda tools so prompts don't block your flow.)"
+configure_mcp_timeouts
+echo "  ✓ MCP_TOOL_TIMEOUT=90s, MCP_TIMEOUT=30s set in ~/.claude/settings.json"
+configure_coda_permissions
 
 # ── Step 4: Open vault in Obsidian ───────────────
 echo ""
