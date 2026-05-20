@@ -203,7 +203,7 @@ Once you're comfortable with the 3-command loop, here's the full toolkit:
 | `/end-day` | Full day wrap with Granola + Slack sweep |
 | `/learn` | Save a lesson or rule for future sessions |
 | `/dream` | Consolidate and clean up Claude's memory |
-| `/oracle-create` | Build a research notebook for any domain (needs NotebookLM MCP) |
+| `/oracle-create` | Build a research notebook for any domain (needs NotebookLM MCP — see below) |
 | `/oracle-ask` | Query your oracle for design guidance |
 | `/oracle-research` | Expand your oracle with new research |
 | `/update-wfk` | Pull the latest skills from GitHub |
@@ -220,8 +220,32 @@ See `CHEATSHEET.md` for the 4-week ramp-up guide.
 | `/orient` doesn't respond | Make sure you ran `claude --dangerously-skip-permissions` |
 | Granola not pulling | Paste transcript manually when `/meet` prompts |
 | Slack not connecting | Check that you authenticated via `claude mcp add` |
+| NotebookLM / Oracle skills fail with auth error | Run `nlm login` from terminal (NOT inside Claude Code), then restart Claude Code. See "NotebookLM / Oracle Setup" below. |
 | agents.md showing placeholders | Open Obsidian, fill in your name/role, save |
 | Any other question | Type your question directly in Claude Code — it'll help |
+
+---
+
+## NotebookLM / Oracle Setup
+
+The Oracle skills (`/oracle-create`, `/oracle-ask`, `/oracle-research`) use NotebookLM via an MCP server. Setup is a 5-step terminal sequence:
+
+1. **Install the CLI** — `uv tool install notebooklm-mcp-cli`  *(requires [uv](https://docs.astral.sh/uv/getting-started/installation/))*
+2. **Register the MCP** — `claude mcp add notebooklm`
+3. **Authenticate** — `nlm login`  *(opens a real Chrome window; sign in with the Google account you want NotebookLM tied to)*
+4. **Verify** — `nlm login --check`  *(should return that auth is valid)*
+5. **Restart Claude Code** — so the MCP server reads your fresh cookies
+
+**Important:** do NOT try to authenticate from inside Claude Code. The `setup_auth` tool exposed by the MCP server runs in headless mode and cannot render Google's OAuth flow. Authentication has to happen from your terminal, via the standalone `nlm` CLI.
+
+**Troubleshooting:**
+
+| Symptom | What to do |
+|---------|------------|
+| `nlm: command not found` | `notebooklm-mcp-cli` didn't install. Re-run step 1, confirm `uv` is installed, then check that `~/.local/bin` is on your `$PATH`. |
+| `nlm login` opens Chrome but auth never completes | Make sure no other Chrome instance is blocking. Try `nlm login --clear` to wipe the localized profile and start fresh. |
+| Auth works in terminal but Claude Code still says `authenticated: false` | Fully quit Claude Code (`/exit` or close the terminal tab), then relaunch. The MCP server has to re-read cookies on startup. |
+| Persistent 401s after a working session | Auth cookies expired. Re-run `nlm login`. Sessions tend to last several weeks. |
 
 ---
 

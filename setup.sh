@@ -240,9 +240,14 @@ echo "             Do not share this token — treat it like a password."
 # NotebookLM (Oracle)
 echo ""
 echo "  [Oracle]   To use /oracle-create, /oracle-ask, /oracle-research:"
-echo "             uv tool install notebooklm-mcp-cli"
-echo "             claude mcp add notebooklm"
+echo "             1. uv tool install notebooklm-mcp-cli"
+echo "             2. claude mcp add notebooklm"
+echo "             3. nlm login        (opens a Chrome window — sign in with Google)"
+echo "             4. nlm login --check  (verify auth succeeded)"
+echo "             5. Restart Claude Code so the MCP picks up the fresh auth"
 echo "             (Requires uv: https://docs.astral.sh/uv/getting-started/installation/)"
+echo "             Note: do NOT try to authenticate via Claude Code's setup_auth tool."
+echo "             The MCP server runs headless and cannot render the OAuth flow."
 
 # ── Done ──────────────────────────────────────────
 echo ""
