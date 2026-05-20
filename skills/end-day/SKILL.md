@@ -51,10 +51,19 @@ If Granola MCP is unavailable, note it and continue without it.
 
 Scoped searches only — do NOT scan all channels broadly.
 
-- Search for @mentions of you in the last 24 hours
-- Search for messages you've flagged/saved but haven't responded to
-- Focus on channels listed in your `agents.md` under `People Ops focus areas`
-- Only surface NEW items not already in the daily note
+First, resolve the user's Slack `user_id` (look it up via `slack_community_lookup_user` with the email from `agents.md` if you don't have it cached for this session).
+
+Run these searches **in parallel**:
+
+1. `to:<@{user_id}> after:{yesterday}` — DMs and group DMs sent to you in the last 24 hours
+2. `from:<@{user_id}> after:{yesterday}` — your own messages (surfaces threads you were active in but may not have closed out)
+3. `<@{user_id}>` scoped to channels listed in `agents.md` under `People Ops focus areas` — channel @mentions
+
+**Pagination is mandatory.** Each Slack search returns 20 results per page. Keep fetching pages until the full date range is covered. Do not stop at page 1 — a single active thread can dominate that page and bury important messages from other people.
+
+After collecting results:
+- Filter to items NOT already in today's daily note `## Worked on` section
+- For each remaining item, identify the project/initiative it belongs to (used in 2c)
 
 ### 2c: Consolidate
 
