@@ -143,11 +143,52 @@ print(f"  ✓ Destructive ops (delete, document_create) still require manual app
 PY
 }
 
+configure_wfk_paths() {
+  # Many skills read ~/.claude/wfk-paths.json at startup to resolve vault
+  # directories. Write a sensible default if it's missing — never clobber a
+  # customized one. vault_root prefers workflow-kit.config.json (set by /setup),
+  # else the bundled vault dir.
+  PATHS_FILE="$HOME/.claude/wfk-paths.json"
+  if [ -f "$PATHS_FILE" ]; then
+    echo "  ✓ wfk-paths.json already present — left as-is"
+    return 0
+  fi
+  VAULT_ROOT="$VAULT_DIR"
+  if [ -f "$VAULT_DIR/workflow-kit.config.json" ]; then
+    VAULT_ROOT=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('vault_root') or sys.argv[2])" "$VAULT_DIR/workflow-kit.config.json" "$VAULT_DIR" 2>/dev/null || echo "$VAULT_DIR")
+  fi
+  python3 - "$PATHS_FILE" "$VAULT_ROOT" <<'PY'
+import json, sys
+path, vault_root = sys.argv[1], sys.argv[2]
+n = "01_Notes"
+data = {
+    "vault_root": vault_root,
+    "paths": {
+        "daily_notes": f"{n}/Daily",
+        "meetings": f"{n}/Meetings",
+        "reports": f"{n}/Reports",
+        "pickups": f"{n}/Pickups",
+        "work_logs": f"{n}/Work Logs",
+        "weekly": f"{n}/Weekly",
+        "projects": "02_Projects",
+        "operations": "03_Operations",
+        "reference": "04_Reference",
+        "system": "05_System",
+        "media": "06_Media",
+    },
+}
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+print(f"  ✓ wrote wfk-paths.json (vault_root={vault_root})")
+PY
+}
+
 if [ "$SKILLS_ONLY" = true ]; then
   echo ""
   echo "→ Installing skills (skills-only mode)..."
   install_skills
   install_agents
+  configure_wfk_paths
   configure_mcp_timeouts
   echo "  ✓ MCP timeouts checked (MCP_TOOL_TIMEOUT=90s, MCP_TIMEOUT=30s)"
   configure_coda_permissions
@@ -215,6 +256,7 @@ install_agents
 echo ""
 echo "→ Configuring Claude Code MCP defaults..."
 echo "  (Caps hung calls + pre-approves common Coda tools so prompts don't block your flow.)"
+configure_wfk_paths
 configure_mcp_timeouts
 echo "  ✓ MCP_TOOL_TIMEOUT=90s, MCP_TIMEOUT=30s set in ~/.claude/settings.json"
 configure_coda_permissions
