@@ -134,3 +134,7 @@ After writing, perform type-specific post-steps from the template (e.g., PIC log
 
 - **Update mode.** If the user says "update the spec" or "add to the PIC", this is an update, not a create. For SPC, read `references/update-spec.md`. For PIC, merge into the existing open PIC. For other types, read the existing file and apply changes.
 - **Retire old skills.** This skill replaces create-sd, create-spec, create-pickup, create-MN, create-concept-brief, design, and structure. Those skills should be removed once this one is validated.
+
+## Local Customizations
+
+If `LOCAL.md` exists in this skill directory, load and follow it after these instructions. Local instructions override upstream where they conflict.

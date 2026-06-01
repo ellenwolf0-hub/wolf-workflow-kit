@@ -12,6 +12,7 @@ set -e
 
 VAULT_DIR="$(pwd)/vault"
 SKILLS_SRC="$(pwd)/skills"
+AGENTS_SRC="$(pwd)/agents"
 
 SKILLS_ONLY=false
 for arg in "$@"; do
@@ -38,6 +39,10 @@ install_skills() {
         mkdir -p "$SKILLS_DIR/$skill_name/templates"
         cp -R "$skill_dir/templates/"* "$SKILLS_DIR/$skill_name/templates/" 2>/dev/null || true
       fi
+      if [ -d "$skill_dir/overlays" ]; then
+        mkdir -p "$SKILLS_DIR/$skill_name/overlays"
+        cp -R "$skill_dir/overlays/"* "$SKILLS_DIR/$skill_name/overlays/" 2>/dev/null || true
+      fi
       echo "  ✓ /$skill_name"
       SKILL_COUNT=$((SKILL_COUNT + 1))
     fi
@@ -45,6 +50,25 @@ install_skills() {
 
   echo ""
   echo "  $SKILL_COUNT skills installed"
+}
+
+install_agents() {
+  # Agent profiles (e.g. the pipeline-coordination orchestrator/worker) live in
+  # agents/ and load at session start. Skipped silently if the repo has none.
+  [ -d "$AGENTS_SRC" ] || return 0
+  AGENTS_DIR="$HOME/.claude/agents"
+  mkdir -p "$AGENTS_DIR"
+
+  AGENT_COUNT=0
+  for agent_file in "$AGENTS_SRC"/*.md; do
+    [ -f "$agent_file" ] || continue
+    cp "$agent_file" "$AGENTS_DIR/$(basename "$agent_file")"
+    echo "  ✓ agent: $(basename "$agent_file" .md)"
+    AGENT_COUNT=$((AGENT_COUNT + 1))
+  done
+
+  echo ""
+  echo "  $AGENT_COUNT agents installed"
 }
 
 configure_mcp_timeouts() {
@@ -123,6 +147,7 @@ if [ "$SKILLS_ONLY" = true ]; then
   echo ""
   echo "→ Installing skills (skills-only mode)..."
   install_skills
+  install_agents
   configure_mcp_timeouts
   echo "  ✓ MCP timeouts checked (MCP_TOOL_TIMEOUT=90s, MCP_TIMEOUT=30s)"
   configure_coda_permissions
@@ -179,6 +204,12 @@ echo ""
 echo "→ Installing skills..."
 
 install_skills
+
+# ── Step 3.1: Install agent profiles ─────────────
+echo ""
+echo "→ Installing agents..."
+
+install_agents
 
 # ── Step 3.5: Configure Claude Code MCP defaults ──
 echo ""

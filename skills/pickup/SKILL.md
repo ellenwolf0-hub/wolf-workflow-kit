@@ -99,3 +99,7 @@ Also update today's daily note under `## Worked On`:
 ## Lingering PIC Detection
 
 If a PIC is still in `picked-up` status but hasn't been actively worked on during this session, ask before the session ends: "[[PIC - Topic]] is still marked as picked-up. Should I close it, carry it forward, or leave it for next session?"
+
+## Local Customizations
+
+If `LOCAL.md` exists in this skill directory, load and follow it after these instructions. Local instructions override upstream where they conflict.

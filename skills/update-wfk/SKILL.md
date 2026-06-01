@@ -89,18 +89,30 @@ After pulling, reinstall updated skills to Claude's skills directory:
 bash setup.sh --skills-only
 ```
 
-If `--skills-only` flag doesn't exist, copy manually:
+If `--skills-only` flag doesn't exist, copy manually. Copy the WHOLE skill
+directory (not just SKILL.md) so subfolders like `references/`, `templates/`,
+and `overlays/` come along — and install agent profiles too:
 ```bash
+# Skills (preserve any existing LOCAL.md — see P3)
 for skill_dir in skills/*/; do
   skill_name=$(basename "$skill_dir")
   if [ -f "$skill_dir/SKILL.md" ]; then
+    local_md="$HOME/.claude/skills/$skill_name/LOCAL.md"
+    [ -f "$local_md" ] && cp "$local_md" /tmp/_keep_LOCAL.md
     mkdir -p "$HOME/.claude/skills/$skill_name"
-    cp "$skill_dir/SKILL.md" "$HOME/.claude/skills/$skill_name/SKILL.md"
+    cp -R "$skill_dir." "$HOME/.claude/skills/$skill_name/"
+    [ -f /tmp/_keep_LOCAL.md ] && mv /tmp/_keep_LOCAL.md "$local_md"
   fi
 done
+
+# Agents (load at session start)
+if [ -d agents ]; then
+  mkdir -p "$HOME/.claude/agents"
+  cp agents/*.md "$HOME/.claude/agents/" 2>/dev/null || true
+fi
 ```
 
-Report: which skills were updated.
+Report: which skills and agents were updated.
 
 ## Push Flow (for contributors)
 
