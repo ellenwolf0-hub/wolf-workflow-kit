@@ -221,6 +221,7 @@ See `CHEATSHEET.md` for the 4-week ramp-up guide.
 | Granola not pulling | Paste transcript manually when `/meet` prompts |
 | Slack not connecting | Check that you authenticated via `claude mcp add` |
 | NotebookLM / Oracle skills fail with auth error | Run `nlm login` from terminal (NOT inside Claude Code), then restart Claude Code. See "NotebookLM / Oracle Setup" below. |
+| Coda MCP tools hang and every subsequent Coda call times out at 90s | The `mcp-remote` shim has wedged. Save your context, `/exit`, relaunch Claude Code. See "Coda MCP Wedge Recovery" below. |
 | agents.md showing placeholders | Open Obsidian, fill in your name/role, save |
 | Any other question | Type your question directly in Claude Code — it'll help |
 
@@ -246,6 +247,21 @@ The Oracle skills (`/oracle-create`, `/oracle-ask`, `/oracle-research`) use Note
 | `nlm login` opens Chrome but auth never completes | Make sure no other Chrome instance is blocking. Try `nlm login --clear` to wipe the localized profile and start fresh. |
 | Auth works in terminal but Claude Code still says `authenticated: false` | Fully quit Claude Code (`/exit` or close the terminal tab), then relaunch. The MCP server has to re-read cookies on startup. |
 | Persistent 401s after a working session | Auth cookies expired. Re-run `nlm login`. Sessions tend to last several weeks. |
+
+---
+
+## Coda MCP Wedge Recovery
+
+**Symptom:** Coda MCP tools (`mcp__Coda__*`) start hanging. After the first hang, every subsequent Coda call in the session times out at 90 seconds.
+
+**Cause:** The `mcp-remote` shim has wedged on an SSE connection drop. The session-wide timeout cap bounds the failure but doesn't recover from it.
+
+**Recovery:**
+
+1. Stop trying Coda tools (they will all fail at 90s).
+2. Save any unsaved context to disk first (write a vault note, save a draft elsewhere).
+3. Run `/exit` to close the Claude Code session.
+4. Relaunch Claude Code. Coda will work again.
 
 ---
 
