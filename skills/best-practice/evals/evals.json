@@ -1,0 +1,23 @@
+{
+  "skill_name": "best-practice",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "what's the best practice for syncing data between two postgres tables that are owned by different services?",
+      "expected_output": "Comparison table with approaches like CDC/Debezium, materialized views, application-level sync, DB triggers. Sources from Postgres docs and engineering blogs. Recommendation considers ownership boundaries.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "best way to handle employee scheduling at a restaurant with 30+ staff across multiple positions?",
+      "expected_output": "Comparison table covering approaches like dedicated scheduling software, spreadsheet-based, shift-bidding systems. Sources from restaurant ops publications. Accounts for cross-training and labor law compliance.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "/best-practice how should I structure error handling in a Python FastAPI app?",
+      "expected_output": "Comparison table with exception handlers, middleware approach, result types. Sources from FastAPI docs, Starlette docs, Python best practice guides. Recommendation for the user's stack.",
+      "files": []
+    }
+  ]
+}

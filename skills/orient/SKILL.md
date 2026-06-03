@@ -89,3 +89,7 @@ Keep it under 15 lines. If the user provided a topic in $ARGUMENTS, lead with co
 - If `agents.md` has no name filled in (still says "[Your name]"), note it: "Heads up — agents.md isn't personalized yet. Fill in your name and role to get better context in every session."
 - Don't read out the full lessons.md or agents.md — just confirm they're loaded.
 - If lessons.md is empty or only has the starter template, don't surface it at all.
+
+## Local Customizations
+
+If `LOCAL.md` exists in this skill directory, load and follow it after these instructions. Local instructions override upstream where they conflict.
