@@ -178,7 +178,7 @@ Then run `/mcp` and complete the browser sign-in. No API token needed.
 
 ---
 
-## All 24 Skills
+## All 25 Skills
 
 Once you're comfortable with the 3-command loop, here's the full toolkit:
 
@@ -202,6 +202,7 @@ Once you're comfortable with the 3-command loop, here's the full toolkit:
 | `/create-agent` | Delegate a task to an autonomous agent |
 | `/create-pickup` | Create a pickup doc for any open item |
 | `/end-day` | Full day wrap with Granola + Slack sweep |
+| `/ingest-day` 🆕 | Pull the day's Granola meetings into a thematic, by-project context block (also powers `/end-day`). New this release — feedback welcome. |
 | `/learn` | Save a lesson or rule for future sessions |
 | `/dream` | Consolidate and clean up Claude's memory |
 | `/oracle-create` | Build a research notebook for any domain (needs NotebookLM MCP — see below) |

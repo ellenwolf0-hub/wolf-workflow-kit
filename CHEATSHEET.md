@@ -53,6 +53,7 @@ Do these every single day until they're muscle memory.
 | `/weekly` | Roll up the week into a summary | Friday afternoon manager update |
 | `/create-agent` | Dispatch an agent to do research or a first draft autonomously | Work done while you're in another meeting |
 | `/end-day` | Full day wrap — Granola sweep, Slack sweep, EOD + SOD | When you want the full picture at day's end |
+| `/ingest-day` 🆕 | Pull today's Granola meetings into a by-project context block (also powers `/end-day`) | Catching up on what was said; grounding a session. New — feedback welcome |
 | `/assess` | People team diagnostic — sweep all sources, surface what's actually going on | New role, new quarter, or any time you need to cut through noise |
 
 ---
@@ -77,6 +78,7 @@ Do these every single day until they're muscle memory.
 /create-agent       — delegate a task to an agent
 /create-pickup      — create a PIC for any open item
 /end-day            — full day wrap with Granola + Slack sweep
+/ingest-day         — pull today's meeting context (Granola), by project  🆕
 ```
 
 ---

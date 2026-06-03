@@ -35,17 +35,16 @@ Read in parallel. Skip missing files silently. Vault root is defined in `agents.
 
 Cast a net across external sources to catch what happened outside of terminal sessions. Run both in parallel.
 
-### 2a: Granola Scan
+### 2a: Granola Scan — via /ingest-day
 
-Use the Granola MCP to list today's meetings.
+Do NOT run a bespoke Granola scan here. Call `/ingest-day` (the shared extractor) and consume its output, so there is a single Granola extractor, not two. `/ingest-day` self-heals the Granola connection, pulls all of today's recordings, and returns a thematic context block grouped by project plus a "meetings without an MN" flag.
 
-For each meeting today:
-- Check if a meeting note (`MN - YYYY-MM-DD (Topic).md`) already exists in `Meetings/`
-- If no MN exists: pull the Granola transcript and invoke `/meet` to generate one
-- Extract open action items and commitments made (by you or others)
-- Cross-reference against `## Worked on` in the daily note — only flag items NOT already captured
+With the returned context block:
+- Use it as the meeting-substance input to the EOD synthesis (Step 3) — decisions, what moved, commitments, by project.
+- For each meeting in its "without an MN" flag: invoke `/meet` to generate the missing `MN - YYYY-MM-DD (Topic).md`. (MN creation stays with `/meet`; `/ingest-day` only flags.)
+- Cross-reference commitments against `## Worked on` in the daily note — only surface items NOT already captured.
 
-If Granola MCP is unavailable, note it and continue without it.
+If `/ingest-day` reports Granola is unavailable after its self-heal retry, note it and continue without it.
 
 ### 2b: Slack Scan
 
