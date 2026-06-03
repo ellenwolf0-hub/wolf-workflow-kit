@@ -68,7 +68,7 @@ Present findings: "I found these Coda docs that look relevant: [list]. Want me t
 pull context from any of these into your profile?"
 
 If Coda MCP is NOT connected, note it and move on:
-> "Coda isn't connected yet — you can add it later with `claude mcp add --transport sse coda https://mcp.coda.io/sse`. Once it's connected, run `/onboard` again to pull your project docs in."
+> "Coda isn't connected yet. You can add it later with `claude mcp add --transport http Coda https://coda.io/apis/mcp`, then run `/mcp` to sign in (no API token needed). Once it's connected, run `/onboard` again to pull your project docs in."
 
 ## Step 3 — Pull Context from Granola
 

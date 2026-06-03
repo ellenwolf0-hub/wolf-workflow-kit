@@ -167,7 +167,7 @@ Connect skills to Slack and Coda without any code. See [`zapier/README.md`](zapi
 |-------------|----------------|-----------------|
 | **Granola** | Sign in to the Granola app | `/meet` pulls transcripts automatically |
 | **Slack** | `claude mcp add --transport sse slack https://mcp.slack.com/sse` | Read/write Slack from skills |
-| **Coda** | Add `CODA_API_TOKEN` to `~/.zshrc` | `/assess` and `/onboard` pull Coda docs |
+| **Coda** | `claude mcp add --transport http Coda https://coda.io/apis/mcp`, then `/mcp` to sign in (no token) | `/assess` and `/onboard` pull Coda docs |
 
 All integrations are optional. Skills degrade gracefully when an integration isn't connected.
 

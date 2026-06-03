@@ -168,12 +168,13 @@ claude mcp add --transport sse slack https://mcp.slack.com/sse
 You'll be redirected to authenticate in your browser.
 
 ### Coda
-1. Go to coda.io/account → API → Generate token
-2. Add to your shell config (`~/.zshrc`):
-   ```
-   export CODA_API_TOKEN="your-token-here"
-   ```
-3. Restart your terminal
+In Claude Code, run:
+```
+claude mcp add --transport http Coda https://coda.io/apis/mcp
+```
+Then run `/mcp` and complete the browser sign-in. No API token needed.
+
+> Note: Coda's login expires periodically and Coda doesn't currently auto-renew it, so you'll occasionally be asked to re-authenticate via `/mcp`. It takes a few seconds. This is a known Coda-side limitation (incident #736), not something your setup did wrong. See "Coda Connection Notes" below.
 
 ---
 
@@ -221,7 +222,8 @@ See `CHEATSHEET.md` for the 4-week ramp-up guide.
 | Granola not pulling | Paste transcript manually when `/meet` prompts |
 | Slack not connecting | Check that you authenticated via `claude mcp add` |
 | NotebookLM / Oracle skills fail with auth error | Run `nlm login` from terminal (NOT inside Claude Code), then restart Claude Code. See "NotebookLM / Oracle Setup" below. |
-| Coda MCP tools hang and every subsequent Coda call times out at 90s | The `mcp-remote` shim has wedged. Save your context, `/exit`, relaunch Claude Code. See "Coda MCP Wedge Recovery" below. |
+| Coda asks you to re-authenticate (again) | Expected. Coda's login expires and can't auto-renew (Coda-side, incident #736). Run `/mcp` and sign in again. Takes a few seconds. See "Coda Connection Notes" below. |
+| Coda calls hang or the server drops | Run `/mcp` to reconnect. If it persists, `/exit` and relaunch Claude Code. Rare now that the old shim is gone. |
 | agents.md showing placeholders | Open Obsidian, fill in your name/role, save |
 | Any other question | Type your question directly in Claude Code — it'll help |
 
@@ -250,18 +252,13 @@ The Oracle skills (`/oracle-create`, `/oracle-ask`, `/oracle-research`) use Note
 
 ---
 
-## Coda MCP Wedge Recovery
+## Coda Connection Notes
 
-**Symptom:** Coda MCP tools (`mcp__Coda__*`) start hanging. After the first hang, every subsequent Coda call in the session times out at 90 seconds.
+Coda connects natively over HTTP with OAuth: `claude mcp add --transport http Coda https://coda.io/apis/mcp`. No API token, no `mcp-remote` shim.
 
-**Cause:** The `mcp-remote` shim has wedged on an SSE connection drop. The session-wide timeout cap bounds the failure but doesn't recover from it.
+**Re-authentication (expected).** Coda issues a short-lived login and currently provides no auto-renew, so every few hours you'll be asked to sign in again. Run `/mcp`, complete the browser sign-in, and continue. This is a known Coda-side limitation (incident #736), not a problem with your setup. (We confirmed the older API-token method no longer works at all — Coda's current endpoint rejects it — so OAuth via `/mcp` is the only supported path.)
 
-**Recovery:**
-
-1. Stop trying Coda tools (they will all fail at 90s).
-2. Save any unsaved context to disk first (write a vault note, save a draft elsewhere).
-3. Run `/exit` to close the Claude Code session.
-4. Relaunch Claude Code. Coda will work again.
+**If Coda calls hang or the server drops.** Run `/mcp` to reconnect. If that doesn't clear it, `/exit` and relaunch Claude Code. The old `mcp-remote` shim that used to wedge has been removed, so this is rare now.
 
 ---
 

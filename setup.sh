@@ -305,10 +305,12 @@ echo "             (You'll be prompted to authenticate in your browser)"
 
 # Coda
 echo ""
-echo "  [Coda]     To connect Coda, you need your API token from coda.io/account"
-echo "             Then add it to your shell config (~/.zshrc or ~/.bashrc):"
-echo '             export CODA_API_TOKEN="your-token-here"'
-echo "             Do not share this token — treat it like a password."
+echo "  [Coda]     In Claude Code, run:"
+echo "             claude mcp add --transport http Coda https://coda.io/apis/mcp"
+echo "             Then run /mcp and complete the browser sign-in. No API token needed."
+echo "             Note: Coda's login expires periodically and can't auto-renew, so"
+echo "             you'll occasionally re-authenticate via /mcp. That's a Coda-side"
+echo "             limitation, not a setup error."
 
 # NotebookLM (Oracle)
 echo ""
