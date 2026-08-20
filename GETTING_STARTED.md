@@ -258,6 +258,16 @@ See `CHEATSHEET.md` for the 4-week ramp-up guide.
 
 ## If Something Breaks
 
+**First, run the health check.** It tells you exactly what's wrong and what to run:
+
+```bash
+bash ~/wolf-workflow-kit/check.sh
+```
+
+It verifies your MCP servers, skills, vault and profile, flags dead or duplicate
+servers, and prints the fix command for anything broken. It needs no Google
+access — Gmail and Calendar are not required by any skill in the kit.
+
 | Problem | Fix |
 |---------|-----|
 | `claude: command not found` | Restart your terminal after install |
