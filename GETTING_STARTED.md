@@ -176,6 +176,39 @@ Then run `/mcp` and complete the browser sign-in. No API token needed.
 
 > Note: Coda's login expires periodically and Coda doesn't currently auto-renew it, so you'll occasionally be asked to re-authenticate via `/mcp`. It takes a few seconds. This is a known Coda-side limitation (incident #736), not something your setup did wrong. See "Coda Connection Notes" below.
 
+### Gmail and Google Calendar
+
+`/orient` and `/prep` are noticeably better with calendar access — they can cross-reference your open work against what's actually on your schedule today.
+
+**Important: don't use the claude.ai connectors for this.** Adding Gmail or Google Calendar at `claude.ai/customize/connectors` will appear to work, but those connectors only reach Claude Code if your login carries a Claude subscription seat. On a usage-based account they never load, with no error message to tell you why. See "The connector trap" below before you spend an hour on this.
+
+**Do this instead:** check whether your company runs an internal MCP gateway. Many do, and one gateway usually covers Gmail, Calendar, Drive, Docs, and Sheets in a single server — much less fiddly than wiring each app up separately. Ask in your internal IT or developer-tools channel for the setup doc, then:
+
+```
+claude mcp add --transport http <name> <your-org-gateway-url>
+```
+
+Run `/mcp` afterward and complete the browser sign-in.
+
+If your company has no gateway, there are community Google Workspace MCP servers you can run locally — but check your IT policy first, since these ask for broad mailbox scopes.
+
+### The connector trap
+
+Worth reading once, because it's the most common way people lose an afternoon.
+
+There are two separate ways to connect an app, and they are **not** interchangeable:
+
+| | claude.ai connectors | Local MCP servers |
+|---|---|---|
+| Set up at | `claude.ai/customize/connectors` (browser) | `claude mcp add` (terminal) |
+| Stored in | Your Anthropic account | `~/.claude.json` |
+| Shows in `claude mcp list` | No | Yes |
+| Reaches Claude Code | **Only with a subscription seat** | Always |
+
+This kit runs entirely on local MCP servers, so it works either way.
+
+The failure mode to recognise: you run `/mcp` and there's no `claude.ai` section at all — not "needs authentication," just absent — while the connectors page in your browser cheerfully shows everything connected. That means your seat doesn't carry connectors into Claude Code. Re-authenticating, running `/login`, and restarting will all fail to fix it, because nothing is broken. Set the app up as a local server instead.
+
 ---
 
 ## All 25 Skills
@@ -222,6 +255,7 @@ See `CHEATSHEET.md` for the 4-week ramp-up guide.
 | `/orient` doesn't respond | Make sure you ran `claude --dangerously-skip-permissions` |
 | Granola not pulling | Paste transcript manually when `/meet` prompts |
 | Slack not connecting | Check that you authenticated via `claude mcp add` |
+| Gmail / Calendar / Slack missing from `/mcp` entirely | The connector trap — your seat doesn't carry claude.ai connectors into Claude Code. Re-login won't help. Set them up as local MCP servers instead. See "The connector trap" above. |
 | NotebookLM / Oracle skills fail with auth error | Run `nlm login` from terminal (NOT inside Claude Code), then restart Claude Code. See "NotebookLM / Oracle Setup" below. |
 | Coda asks you to re-authenticate (again) | Expected. Coda's login expires and can't auto-renew (Coda-side, incident #736). Run `/mcp` and sign in again. Takes a few seconds. See "Coda Connection Notes" below. |
 | Coda calls hang or the server drops | Run `/mcp` to reconnect. If it persists, `/exit` and relaunch Claude Code. Rare now that the old shim is gone. |

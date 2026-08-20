@@ -113,26 +113,47 @@ See `zapier/README.md` for setup.
 |---------|-----|
 | Granola not pulling | Paste transcript manually when `/meet` prompts |
 | Zapier not firing | Check your Zap is **Published** (not Draft) at zapier.com |
+| Gmail/Calendar/Slack missing entirely | Connector trap — see below. Don't re-login, it won't help |
 | Slack MCP error | Re-run `/orient` — will prompt browser re-auth |
 | Lost track of session | Run `/recap` then `/closeout` to reset |
 | Any question | Ask Claude: "What does /[skill] do?" |
 
-### When Coda hangs (multi-minute "thinking" with no progress)
+### "Claude can't see my Gmail / Calendar / Slack" (the connector trap)
 
-The personal Coda MCP shipped with the kit is a community proxy with known instability. Sometimes the remote connection drops mid-call. Two things make this manageable:
+This is the single most common setup dead end, and it costs people an hour if they don't know about it. There are **two different ways** to wire an app into Claude, and only one of them reaches Claude Code.
 
-1. **Timeout caps (auto-applied by setup.sh).** Your `~/.claude/settings.json` has `MCP_TOOL_TIMEOUT=90000` (90s) and `MCP_TIMEOUT=30000` (30s). Worst-case latency is bounded — no more hour-long hangs. If you ran setup before 2026-05-19, run `/update-wfk pull` to pick this up.
-2. **Pre-approved Coda permissions (auto-applied by setup.sh).** Your `~/.claude/settings.local.json` has the common Coda read/write tools pre-approved so prompts don't fire on every call. Destructive ops (delete, document_create) still require manual approval. Same `/update-wfk pull` applies the allowlist.
+**Path 1 — claude.ai connectors.** Managed by Anthropic, configured in the browser at `claude.ai/customize/connectors`. These show up in Claude Code's `/mcp` list **only if your login carries a Claude subscription seat**. If your account is usage-based (API billing, no subscription), Claude Code will not load them — no error, they're just silently absent.
 
-**When Coda still flakes anyway:**
+**Path 2 — local MCP servers.** What this kit runs on. Configured with `claude mcp add` and stored in `~/.claude.json`. These work regardless of seat type.
+
+**How to tell which situation you're in:**
+
 ```bash
-claude mcp remove Coda
-# then re-add via the kit's setup instructions (Step 5, Coda section)
+claude mcp list        # shows ONLY Path 2 servers — never claude.ai connectors
 ```
 
-**Symptoms that mean the shim dropped, not Claude hanging:**
-- "MCP error -32000: Connection closed" in the tool result
-- A Coda call that took 60-90s then errored (the cap fired)
-- Multiple Coda calls in a row all failing
+Then run `/mcp` inside Claude Code. If you see a `claude.ai` section, Path 1 is working for you. If that section is **entirely absent** — not "needs authentication," just missing — your seat doesn't carry connectors and no amount of `/login`, re-auth, or restarting will change it.
 
-If you hit any of those, do the `claude mcp remove Coda` recovery before continuing the work.
+**Don't chase this.** Signing out and back in won't fix it. Re-authenticating the connectors in the browser won't fix it. The connectors page will keep showing them as happily connected, because they *are* connected — to the web surface, not to Claude Code.
+
+**What to do instead:** set the app up as a Path 2 local server. Check your company's internal IT documentation first — many orgs run a single MCP gateway that covers Gmail, Calendar, Drive, and Docs in one server, which is far less fiddly than wiring each app separately. If yours does, add that one gateway and you're done.
+
+> If your org's official Claude setup doc walks you through the `claude.ai Gmail` / `claude.ai Google Calendar` connectors, note that those instructions assume a subscription seat. On a usage-based seat they will not work, and the doc may not say so.
+
+### When Coda hangs or asks you to re-authenticate
+
+Coda connects natively over HTTP with OAuth (`claude mcp add --transport http Coda https://coda.io/apis/mcp`). No API token, no `mcp-remote` shim — the old community proxy that used to wedge for hours has been removed.
+
+**Re-authentication is expected, not a bug.** Coda issues a short-lived login and provides no auto-renew, so every few hours you'll be asked to sign in again. Run `/mcp`, complete the browser sign-in, continue. Known Coda-side limitation, not something your setup did wrong.
+
+**If calls hang or the server drops:** run `/mcp` to reconnect. If that doesn't clear it, `/exit` and relaunch Claude Code. Last resort:
+
+```bash
+claude mcp remove Coda
+claude mcp add --transport http Coda https://coda.io/apis/mcp
+```
+
+**Safety nets applied by `setup.sh`** (run `/update-wfk pull` if you set up before 2026-05-19):
+
+1. **Timeout caps.** `~/.claude/settings.json` has `MCP_TOOL_TIMEOUT=90000` (90s) and `MCP_TIMEOUT=30000` (30s), so worst-case latency is bounded.
+2. **Pre-approved Coda permissions.** `~/.claude/settings.local.json` pre-approves common Coda read/write tools so prompts don't fire on every call. Destructive ops (delete, `document_create`) still require manual approval.
