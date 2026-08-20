@@ -163,16 +163,25 @@ Make sure you're signed into the Granola app. Claude Code will find it automatic
 ### Slack
 In Claude Code, run:
 ```
-claude mcp add --transport sse slack https://mcp.slack.com/sse
+claude mcp add -s user --transport http slack https://mcp.slack.com/mcp
 ```
+
+> If you set Slack up before 2026-08-20 and it shows `failed`, that's why: the old
+> `--transport sse https://mcp.slack.com/sse` endpoint now redirects and no longer
+> completes a connection. Run `claude mcp remove slack` and re-add with the command
+> above.
 You'll be redirected to authenticate in your browser.
 
 ### Coda
 In Claude Code, run:
 ```
-claude mcp add --transport http Coda https://coda.io/apis/mcp
+claude mcp add -s user --transport http Coda https://coda.io/apis/mcp
 ```
 Then run `/mcp` and complete the browser sign-in. No API token needed.
+
+> **Use `-s user` on every `claude mcp add`.** Without it the server is saved against
+> whatever folder you happened to be in, and it silently disappears the moment you launch
+> Claude Code from anywhere else. `-s user` makes it available in every directory.
 
 > Note: Coda's login expires periodically and Coda doesn't currently auto-renew it, so you'll occasionally be asked to re-authenticate via `/mcp`. It takes a few seconds. This is a known Coda-side limitation (incident #736), not something your setup did wrong. See "Coda Connection Notes" below.
 
@@ -269,7 +278,11 @@ See `CHEATSHEET.md` for the 4-week ramp-up guide.
 The Oracle skills (`/oracle-create`, `/oracle-ask`, `/oracle-research`) use NotebookLM via an MCP server. Setup is a 5-step terminal sequence:
 
 1. **Install the CLI** — `uv tool install notebooklm-mcp-cli`  *(requires [uv](https://docs.astral.sh/uv/getting-started/installation/))*
-2. **Register the MCP** — `claude mcp add notebooklm`
+2. **Register the MCP** — `claude mcp add -s user notebooklm-mcp -- notebooklm-mcp`
+   *(The name matters. The Oracle skills call `mcp__notebooklm-mcp__*`, so registering this as
+   plain `notebooklm` produces tools the skills can't see. If you already have a server named
+   `notebooklm`, run `claude mcp remove notebooklm` — running both at once gives you duplicate
+   NotebookLM tools and Claude picks between them arbitrarily.)*
 3. **Authenticate** — `nlm login`  *(opens a real Chrome window; sign in with the Google account you want NotebookLM tied to)*
 4. **Verify** — `nlm login --check`  *(should return that auth is valid)*
 5. **Restart Claude Code** — so the MCP server reads your fresh cookies
